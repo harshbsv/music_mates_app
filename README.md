@@ -1,3 +1,3 @@
 # music_mates_app
 
-Fork copy of the Music Mates App tutorial using GraphQL in Flutter.
+Fork copy of the Music Mates App tutorial using GraphQL in Flutter. Currently WIP.
