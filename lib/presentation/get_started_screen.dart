@@ -68,7 +68,7 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
 
     final bool hasSelectedArtist =
         favouriteArtists != null && favouriteArtists.isNotEmpty;
-        
+
     Navigator.popAndPushNamed(
       context,
       hasSelectedArtist ? Routes.home : Routes.selectArtist,

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:music_mates_app/data/data_export.dart';
-
+import 'package:music_mates_app/data/model/error.dart';
 
 class QueriesDocumentProvider extends InheritedWidget {
   const QueriesDocumentProvider(
@@ -24,25 +24,18 @@ class QueriesDocumentProvider extends InheritedWidget {
 }
 
 extension BuildContextExtension on BuildContext {
+  /// Enables us to use context to access queries with [context.queries]
   MusicMateQueries get queries => QueriesDocumentProvider.of(this);
 
-  GraphQLClient get graphQlClient => GraphQLProvider.of(this).value;
-
-  void cacheGoogleId(String googleId) {
-    graphQlClient.cache.writeNormalized('AppData', {'googleId': googleId});
-  }
-
- String get retrieveGoogleId =>
-      graphQlClient.cache.store.get('AppData')!['googleId'];
-
+  /// Use context to show material banner with [context.showError()]
   void showError(ErrorModel error) {
-    SchedulerBinding.instance?.addPostFrameCallback((timeStamp) {
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
       var theme = Theme.of(this);
       ScaffoldMessenger.of(this).showMaterialBanner(
         MaterialBanner(
           backgroundColor: theme.colorScheme.primary,
           contentTextStyle:
-              theme.textTheme.headline5!.copyWith(color: Colors.white),
+              theme.textTheme.headlineSmall!.copyWith(color: Colors.white),
           content: Text(error.error),
           actions: [
             InkWell(
@@ -54,4 +47,17 @@ extension BuildContextExtension on BuildContext {
       );
     });
   }
+
+  /// Enables us to use context to access an instance of [GraphQLClient] with [context.graphQlClient]
+  GraphQLClient get graphQlClient => GraphQLProvider.of(this).value;
+
+  /// Take advantage of the GraphQL cache to cache the user's Google ID
+  /// to be used across the app
+  void cacheGoogleId(String googleId) {
+    graphQlClient.cache.writeNormalized('AppData', {'googleId': googleId});
+  }
+
+  /// Retrieves current user's Google ID from the cache
+  String get retrieveGoogleId =>
+      graphQlClient.cache.store.get('AppData')!['googleId'];
 }

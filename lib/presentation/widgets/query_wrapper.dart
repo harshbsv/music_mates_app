@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:music_mates_app/data/data_export.dart';
+import 'package:music_mates_app/data/model/error.dart';
 import 'package:music_mates_app/presentation/widgets/export.dart';
 
 class QueryWrapper<T> extends StatelessWidget {
@@ -11,10 +12,20 @@ class QueryWrapper<T> extends StatelessWidget {
     required this.dataParser,
     this.variables,
   }) : super(key: key);
+
+  /// Query parameters meant to be passed alongside the query
   final Map<String, dynamic>? variables;
+
+  /// The query string document to request from the GraphQL endpoint
   final String queryString;
+
+  /// This callback method is responsible for building our UI and passing the data
   final Widget Function(T data) contentBuilder;
+
+  /// This callback receives the JSON data in the form of a map and then
+  /// parses the data to our model class
   final T Function(Map<String, dynamic> data) dataParser;
+
   @override
   Widget build(BuildContext context) {
     return Query(
@@ -38,7 +49,7 @@ class QueryWrapper<T> extends StatelessWidget {
           );
         }
 
-        return contentBuilder(result.parserFn(result.data ?? {}));
+        return contentBuilder(result.parserFn(result.data ?? {}) as T);
       },
     );
   }

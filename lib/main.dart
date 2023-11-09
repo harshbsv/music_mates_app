@@ -63,7 +63,6 @@ class _MyAppState extends State<MyApp> {
 
     final lightTheme = ThemeData(
       cardColor: Colors.grey[300],
-      backgroundColor: Colors.white,
       scaffoldBackgroundColor: Colors.white,
       bottomSheetTheme: bottomSheetTheme,
       appBarTheme: AppBarTheme(
@@ -74,8 +73,7 @@ class _MyAppState extends State<MyApp> {
         iconTheme: const IconThemeData(
           color: Color(0xff232323),
         ),
-      ),
-      colorScheme: const ColorScheme.light(),
+      ), colorScheme: const ColorScheme.light().copyWith(background: Colors.white),
     );
     return lightTheme;
   }
